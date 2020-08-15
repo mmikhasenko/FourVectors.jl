@@ -8,12 +8,10 @@ using Test
 
 @test collect(FourVector(1,2,3; t=4)) == [1,2,3,4]
 
-let
-    x = Particle(1.1,2.2,3.0; msq=4)
-    newp = [3,3,3] 
-    x.p .= newp
-    @test invmasssq(x) == x.E^2 - sum(abs2,newp)
-end
+x = Particle(1.1,2.2,3.0; msq=4)
+newp = [3,3,3] 
+x.p .= newp
+@test invmasssq(x) == x.E^2 - sum(abs2,newp)
 
 @test x.E == x.T == x[0]== x[4]
 @test x.Px == x.X == x.x == x.px
