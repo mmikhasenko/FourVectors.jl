@@ -17,3 +17,9 @@ invmasssq(pγ1)
 @test invmasssq(pγ2) < 1e-10
 @test invmasssq(pγ1+pγ2) == invmasssq(pπ0)
 @test pγ1+pγ2 == pπ0
+# 
+p = Particle(160,3,1; msq = 1.1);
+α = 1.4; γ = 10;
+@test sum(Rz(Rz(p,α),-α) .≈ p) == 4
+@test sum(Ry(Ry(p,α),-α) .≈ p) == 4
+@test sum(Bz(Bz(p,γ),-γ) .≈ p) == 4

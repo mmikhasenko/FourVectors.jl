@@ -9,10 +9,11 @@ Particle(px,py,pz;msq = error("mass needed")) = FourVector(px,py,pz,t=sqrt(px^2+
 import Base:size
 size(p::FourVector{T} where T) = (4,)
 
-import Base:getindex,setindex!
+import Base: getindex, setindex!
 getindex(p::FourVector{T} where T, i::Int) = (i==0 ? getindex(p.fv,4) : getindex(p.fv,i))
+getindex(p::FourVector{T} where T, I::Vararg) = getindex(p.fv, I...)
 setindex!(p::FourVector{T} where T, v, i::Int)	= (i==0 ? setindex!(p.fv,v,4) : setindex!(p.fv, v, i))
-setindex!(p::FourVector{T} where T, v, I::Vararg{Int, N} where N) = setindex!(p.fv, v, I)
+setindex!(p::FourVector{T} where T, v, I::Vararg{Int, 1}) = setindex!(p.fv, v, I...)
 
 import Base:+,-,*
 +(p1::FourVector, p2::FourVector) = FourVector(p1.fv+p2.fv)

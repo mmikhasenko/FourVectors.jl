@@ -9,7 +9,7 @@ using Test
 @test collect(FourVector(1,2,3; t=4)) == [1,2,3,4]
 
 x = Particle(1.1,2.2,3.0; msq=4)
-newp = [3,3,3] 
+newp = [1.1,1.1,1.1] 
 x.p .= newp
 @test invmasssq(x) == x.E^2 - sum(abs2,newp)
 
@@ -18,5 +18,12 @@ x.p .= newp
 @test x.Py == x.Y == x.y == x.py
 @test x.Pz == x.Z == x.z == x.pz
 
+@test length(x) == 4
+@test mass(x * 1000) ≈ 1000*mass(x)
+
 @test sphericalangles(Particle(0,4,3; msq=4^2)) == (3/5,π/2)
 @test boostfactor(Particle(4,0,0; msq=3^2)) == 5/3
+
+x1,x2 = x[[1,2]]
+x[[1,2]] .= x[[2,1]]
+@test x[[1,2]] == [x2,x1]
