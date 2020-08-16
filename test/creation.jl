@@ -5,6 +5,8 @@ using Test
 @test FourVector(1,2,3; t=4) == FourVector(MVector(1,2,3,4.0))
 @test FourVector(1,2,3; t=4) == Particle(p=[1,2,3], E=4.0)
 @test Particle(0,0,3; msq=4^2) == Particle(p=[0,0,3], E=5.0)
+# 
+@test mass(Particle(1,2,3; msq=4)) ≈ 2
 
 @test collect(FourVector(1,2,3; t=4)) == [1,2,3,4]
 
