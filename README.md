@@ -13,7 +13,7 @@ x,y,z,t = [1, 2, 3, 4.0]
 #
 FourVector(x,y,z; t=t)
 ```
-The four-argument constructor is not included to avoid confusion with `t=>[0]` or `t=>[0]` indices.
+The four-argument constructor is not implemented to avoid confusion with `t=>[0]` or `t=>[4]` indices.
 
 `Particle` is an alias of the `FourVector` with an additional constructors:
 ```julia
