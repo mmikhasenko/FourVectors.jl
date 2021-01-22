@@ -1,8 +1,7 @@
 # FourVectors.jl
 Basic operations with the four vectors in Julia.
 
-[![Build Status](https://travis-ci.com/mmikhasenko/FourVectors.jl.svg?branch=master)](https://travis-ci.com/mmikhasenko/FourVectors.jl)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/mmikhasenko/FourVectors.jl?svg=true)](https://ci.appveyor.com/project/mmikhasenko/FourVectors-jl)
+[![Build Status](https://github.com/mmikhasenko/FourVectors.jl/workflows/CI/badge.svg)](https://github.com/mmikhasenko/FourVectors.jl/actions)
 [![Codecov](https://codecov.io/gh/mmikhasenko/FourVectors.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/mmikhasenko/FourVectors.jl)
 
 The `FourVector` is a struct based on the mutable StaticArray `MArray{T,4}`, defined as a subtype of `AbstractArray`. Basic interfaces are implemented.
