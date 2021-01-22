@@ -5,7 +5,7 @@ using StaticArrays
 using LinearAlgebra
 
 export FourVector
-export Particle
+export Particle, SParticle
 
 export psq, invmasssq, mass
 export sphericalangles, boostfactor
