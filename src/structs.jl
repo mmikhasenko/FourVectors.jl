@@ -45,15 +45,15 @@ function Base.getproperty(p::FourVector, sym::Symbol)
     (sym == :Pz || sym == :pz || sym == :z || sym == :Z) && return getfield(p, :fv)[3]
     (sym == :E  || sym == :p0 || sym == :t || sym == :T) && return getfield(p, :fv)[4]
     (sym == :p  || sym == :P) && return _view(getfield(p, :fv), SOneTo(3))
-    error("type FourVector has no property $(sym)")
+    throw(ArgumentError("type FourVector has no property $(sym)"))
 end
 
-LinearAlgebra.dot(p1::FourVector, p2::FourVector) = p1.E * p2.E - dot(p1.p, p2.p)
+LinearAlgebra.dot(p1::FourVector, p2::FourVector) = p1.E * p2.E - dot(p1.P, p2.P)
 
 # properties
-psq(p::FourVector) = sum(abs2, p.p)
+psq(p::FourVector) = sum(abs2, p.P)
 invmasssq(p::FourVector) = p ⋅ p
 mass(p::FourVector) = sqrt(invmasssq(p))
 
-sphericalangles(p::FourVector) = p.p[3] / norm(p.p), atan(p.p[2], p.p[1])
+sphericalangles(p::FourVector) = p.P[3] / norm(p.P), atan(p.P[2], p.P[1])
 boostfactor(p::FourVector) = p.E / mass(p)
