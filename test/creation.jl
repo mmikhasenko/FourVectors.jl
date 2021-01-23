@@ -8,6 +8,9 @@ using Test
 @testset "creation - $Particle" for Particle in [Particle, SParticle]
     @test Particle(0,0,3; msq=4^2) == Particle(p=[0,0,3], E=5.0)
 
+    @test_throws ArgumentError Particle(1,2,3)
+    @test_throws ArgumentError Particle(1,2,3; msq=4^2, E=3.3)
+
     @test mass(Particle(1,2,3; msq=4)) ≈ 2
 
     @test collect(FourVector(1,2,3; t=4)) == [1,2,3,4]
@@ -26,6 +29,8 @@ using Test
     @test x.Px == x.X == x.x == x.px
     @test x.Py == x.Y == x.y == x.py
     @test x.Pz == x.Z == x.z == x.pz
+    @test psq(x) == sum(abs2, x[1:3])
+    @test_throws ArgumentError x.SomethingElse
 
     @test length(x) == 4
     @test mass(x * 1000) ≈ 1000*mass(x)
