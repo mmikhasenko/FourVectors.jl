@@ -10,7 +10,8 @@ export Particle, SParticle
 export psq, invmasssq, mass
 export sphericalangles, boostfactor
 export dot
-include("structs.jl")
+include("four_vector.jl")
+include("particle.jl")
 
 export Rx, Rx!
 export Ry, Ry!
