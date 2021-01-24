@@ -4,23 +4,6 @@ struct FourVector{T, A <: StaticVector{4, T}} <: StaticVector{4, T}
 end
 FourVector{T, A}(x::Tuple) where {T, A} = FourVector(A(x))
 FourVector(x, y, z; t) = FourVector(MVector(x, y, z, t))
-Particle(; E, p) = FourVector(p...; t=E)
-SParticle(; E, p) = FourVector(SVector(p..., E))
-
-function Particle(px,py,pz; E=nothing, msq=nothing)
-    if (msq === nothing) == (E === nothing)
-        throw(ArgumentError("Must provide exactly one of either `msq` or `E`."))
-    end
-    E !== nothing && return FourVector(px, py, pz; t=E)
-    return FourVector(px, py, pz; t=sqrt(hypot(px, py, pz)^2 + msq))
-end
-function SParticle(px,py,pz; E=nothing, msq=nothing)
-    if (msq === nothing) == (E === nothing)
-        throw(ArgumentError("Must provide exactly one of either `msq` or `E`."))
-    end
-    E !== nothing && return FourVector(SVector(px, py, pz, E))
-    return FourVector(SVector(px, py, pz, sqrt(hypot(px, py, pz)^2 + msq)))
-end
 
 function StaticArrays.similar_type(
     ::Type{FourVector{S, A}}, ::Type{T}, ::Size{(4,)},
