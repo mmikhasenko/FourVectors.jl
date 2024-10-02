@@ -1,20 +1,20 @@
-struct FourVector{T, A <: StaticVector{4, T}} <: StaticVector{4, T}
+struct FourVector{T,A<:StaticVector{4,T}} <: StaticVector{4,T}
     fv::A # px,py,pz,E
-    FourVector(fv::A) where {T, A <: StaticVector{4, T}} = new{T, A}(fv)
+    FourVector(fv::A) where {T,A<:StaticVector{4,T}} = new{T,A}(fv)
 end
-FourVector{T, A}(x::Tuple) where {T, A} = FourVector(A(x))
+FourVector{T,A}(x::Tuple) where {T,A} = FourVector(A(x))
 FourVector(x, y, z; t) = FourVector(MVector(x, y, z, t))
-Particle(; E, p) = FourVector(p...; t=E)
+Particle(; E, p) = FourVector(p...; t = E)
 SParticle(; E, p) = FourVector(SVector(p..., E))
 
-function Particle(px,py,pz; E=nothing, msq=nothing)
+function Particle(px, py, pz; E = nothing, msq = nothing)
     if (msq === nothing) == (E === nothing)
         throw(ArgumentError("Must provide exactly one of either `msq` or `E`."))
     end
-    E !== nothing && return FourVector(px, py, pz; t=E)
-    return FourVector(px, py, pz; t=sqrt(hypot(px, py, pz)^2 + msq))
+    E !== nothing && return FourVector(px, py, pz; t = E)
+    return FourVector(px, py, pz; t = sqrt(hypot(px, py, pz)^2 + msq))
 end
-function SParticle(px,py,pz; E=nothing, msq=nothing)
+function SParticle(px, py, pz; E = nothing, msq = nothing)
     if (msq === nothing) == (E === nothing)
         throw(ArgumentError("Must provide exactly one of either `msq` or `E`."))
     end
@@ -23,9 +23,11 @@ function SParticle(px,py,pz; E=nothing, msq=nothing)
 end
 
 function StaticArrays.similar_type(
-    ::Type{FourVector{S, A}}, ::Type{T}, ::Size{(4,)},
-) where {S, A, T}
-    return FourVector{T, similar_type(A, T)}
+    ::Type{FourVector{S,A}},
+    ::Type{T},
+    ::Size{(4,)},
+) where {S,A,T}
+    return FourVector{T,similar_type(A, T)}
 end
 
 Base.@propagate_inbounds function Base.getindex(p::FourVector, i::Int)
@@ -43,8 +45,8 @@ function Base.getproperty(p::FourVector, sym::Symbol)
     (sym == :Px || sym == :px || sym == :x || sym == :X) && return getfield(p, :fv)[1]
     (sym == :Py || sym == :py || sym == :y || sym == :Y) && return getfield(p, :fv)[2]
     (sym == :Pz || sym == :pz || sym == :z || sym == :Z) && return getfield(p, :fv)[3]
-    (sym == :E  || sym == :p0 || sym == :t || sym == :T) && return getfield(p, :fv)[4]
-    (sym == :p  || sym == :P) && return _view(getfield(p, :fv), SOneTo(3))
+    (sym == :E || sym == :p0 || sym == :t || sym == :T) && return getfield(p, :fv)[4]
+    (sym == :p || sym == :P) && return _view(getfield(p, :fv), SOneTo(3))
     throw(ArgumentError("type FourVector has no property $(sym)"))
 end
 
