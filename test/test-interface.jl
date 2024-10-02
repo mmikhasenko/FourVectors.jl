@@ -1,9 +1,9 @@
 using FourVectors
-using FourMomentumBase
+using LorentzVectorBase
 
 x,y,z,t = [1, 2, 3, 4.0]
 v = FourVector(x,y,z; t=t)
 
 cth,phi = sphericalangles(v)
-@test FourMomentumBase.cos_theta(v) == cth
-@test FourMomentumBase.azimuthal_angle(v) == phi
+@test LorentzVectorBase.cos_theta(v) == cth
+@test LorentzVectorBase.azimuthal_angle(v) == phi

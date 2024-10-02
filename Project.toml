@@ -4,13 +4,13 @@ authors = ["Misha Mikhasenko <mikhail.mikhasenko@gmail.com>"]
 version = "0.2.0"
 
 [deps]
-FourMomentumBase = "592a752d-6533-4762-a71b-738712ea30ec"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+LorentzVectorBase = "592a752d-6533-4762-a71b-738712ea30ec"
 Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
-FourMomentumBase = "0.0.1"
+LorentzVectorBase = "0.0.1"
 Parameters = "0.12"
 StaticArrays = "1"
 julia = "1.3"

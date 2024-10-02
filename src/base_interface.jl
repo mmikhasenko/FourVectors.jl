@@ -1,5 +1,5 @@
-FourMomentumBase.coordinate_system(::FourVector) = FourMomentumBase.EXYZ()
-FourMomentumBase.px(mom::FourVector) = mom.x
-FourMomentumBase.py(mom::FourVector) = mom.y
-FourMomentumBase.pz(mom::FourVector) = mom.z
-FourMomentumBase.energy(mom::FourVector) = mom.E
+LorentzVectorBase.coordinate_system(::FourVector) = LorentzVectorBase.EXYZ()
+LorentzVectorBase.px(mom::FourVector) = mom.x
+LorentzVectorBase.py(mom::FourVector) = mom.y
+LorentzVectorBase.pz(mom::FourVector) = mom.z
+LorentzVectorBase.energy(mom::FourVector) = mom.E

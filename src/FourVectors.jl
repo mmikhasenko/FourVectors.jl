@@ -3,7 +3,7 @@ module FourVectors
 using Parameters
 using StaticArrays
 using LinearAlgebra
-using FourMomentumBase
+using LorentzVectorBase
 
 export FourVector
 export Particle, SParticle
@@ -13,7 +13,7 @@ export sphericalangles, boostfactor
 export dot
 include("structs.jl")
 
-import FourMomentumBase: coordinate_system, px, py, pz, energy
+import LorentzVectorBase: coordinate_system, px, py, pz, energy
 include("base_interface.jl")
 
 export Rx, Rx!
