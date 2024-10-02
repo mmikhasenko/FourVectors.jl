@@ -1,5 +1,5 @@
 using FourVectors
-using LorentzVectorBase
+using FourVectors.LorentzVectorBase
 
 x, y, z, t = [1, 2, 3, 4.0]
 v = FourVector(x, y, z; t = t)
