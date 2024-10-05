@@ -45,7 +45,7 @@ function Bz(p::FourVector{T}, γ::T) where {T}
     _βγ = sqrt(γ^2 - 1) * sign(γ)
     #
     new_pz = _γ * p.pz + _βγ * p.E
-    new_E  = _γ * p.E + _βγ * p.pz
+    new_E = _γ * p.E + _βγ * p.pz
     return FourVector{T}(p.px, p.py, new_pz, new_E)
 end
 

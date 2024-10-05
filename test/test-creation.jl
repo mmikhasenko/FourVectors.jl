@@ -1,6 +1,4 @@
 using FourVectors
-using FourVectors.LorentzVectorBase
-using FourVectors.StaticArrays
 using Test
 
 p = FourVector(1.0, 2.0, 3.0; E = 4.0)

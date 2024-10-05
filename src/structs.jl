@@ -5,7 +5,13 @@ struct FourVector{T} <: FieldVector{4,T}
     E::T
 end
 
-function FourVector(px::T, py::T, pz::T; E::Union{Nothing, T}=nothing, M::Union{Nothing, T}=nothing) where {T}
+function FourVector(
+    px::T,
+    py::T,
+    pz::T;
+    E::Union{Nothing,T} = nothing,
+    M::Union{Nothing,T} = nothing,
+) where {T}
     @assert (E !== nothing) != (M !== nothing) "Must specify exactly one of E or M."
 
     if E !== nothing
@@ -28,7 +34,7 @@ LorentzVectorBase.energy(mom::FourVector) = mom.E
 
 LinearAlgebra.dot(p1::FourVector, p2::FourVector) = p1.E * p2.E - dot(p1.P, p2.P)
 
-spherical_coordinates(p) = (cosθ=cos_theta(p), ϕ=azimuthal_angle(p))
+spherical_coordinates(p) = (cosθ = cos_theta(p), ϕ = azimuthal_angle(p))
 
 
 # Particle(; E, p) = FourVector(p...; t = E)

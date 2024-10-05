@@ -8,10 +8,10 @@ using LorentzVectorBase
 export FourVector
 
 # Access the list of function names
-const ALL_GETTER_FUNCTIONS =
-    vcat(
-        collect(LorentzVectorBase.FOURMOMENTUM_GETTER_FUNCTIONS),
-        collect(keys(LorentzVectorBase.FOURMOMENTUM_GETTER_ALIASSES)))
+const ALL_GETTER_FUNCTIONS = vcat(
+    collect(LorentzVectorBase.FOURMOMENTUM_GETTER_FUNCTIONS),
+    collect(keys(LorentzVectorBase.FOURMOMENTUM_GETTER_ALIASSES)),
+)
 
 # Loop over each function name and import and export it
 for func_sym in ALL_GETTER_FUNCTIONS
