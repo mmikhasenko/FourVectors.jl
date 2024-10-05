@@ -1,49 +1,100 @@
-# FourVectors.jl
-Basic operations with the four vectors in Julia.
+# FourVectors
 
-[![Build Status](https://github.com/mmikhasenko/FourVectors.jl/workflows/CI/badge.svg)](https://github.com/mmikhasenko/FourVectors.jl/actions)
-[![Codecov](https://codecov.io/gh/mmikhasenko/FourVectors.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/mmikhasenko/FourVectors.jl)
+[![Test workflow status](https://github.com/mmikhasenko/FourVectors.jl/actions/workflows/Test.yml/badge.svg?branch=main)](https://github.com/mmikhasenko/FourVectors.jl/actions/workflows/Test.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/mmikhasenko/FourVectors.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/mmikhasenko/FourVectors.jl)
 
-The `FourVector` is a struct based on the mutable StaticArray `MArray{T,4}`, defined as a subtype of `AbstractArray`. Basic interfaces are implemented.
+The `FourVector` is Julia package for handling four-vectors based on the immutable StaticArray `FieldArray{T,4}`.
+It provides a simple and efficient implementation of an immutable four-vector object, utilizing the `LorentzVectorBase.jl` interface.
+Inherits from `FieldArray{T,4}` implies that the `FourVector` is a subtype of `AbstractArray`, can be indexed, and iterated.
 
-## Possible constuctors:
+## Installation
+
+The package is not registered yet.
+Install the package using Julia's package manager:
+
 ```julia
-x,y,z,t = [1, 2, 3, 4.0]
-#
-FourVector(x,y,z; t=t)
-```
-The four-argument constructor is not implemented to avoid confusion with `t=>[0]` or `t=>[4]` indices.
-
-`Particle` is an alias of the `FourVector` with an additional constructors:
-```julia
-E,px,py,pz = 100,1,4,90
-#
-@assert Particle(;E=E,p=(px,py,pz)) == Particle(px,py,pz;E=E)
-Particle(px,py,pz; msq=5^2) # for a given mass
+julia> ] add https://github.com/mmikhasenko/FourVectors.jl
 ```
 
-## Transformations
-The rotation and boost functions with `!` modify the object.
+## Usage
+
+First, import the package:
+
 ```julia
-p = Particle(1,2,3; msq=4)
-cosθ,ϕ = sphericalangles(p)
-Rz!(p,-ϕ) # will modify p
-Ry!(p,-acos(cosθ)) # will modify p
-@assert sum(abs2,p.p) ≈ p.pz^2
-```
-The constant methods are also available:
-```julia
-p = Particle(1,2,3; msq=4)
-cosθ,ϕ = sphericalangles(p)
-p_rot = Ry(Rz(p,-ϕ),-acos(cosθ)) # p is unmodified
-@assert sum(abs2,p_rot.p) ≈ p.pz^2
+using FourVectors
 ```
 
-## Accessing properties
+### Creating FourVectors
+
+You can create a `FourVector` by specifying the spatial components and either the energy `E` or the mass `M`.
+
 ```julia
-p = Particle(1,2,3; msq=4)
-@assert p.x == p.X == p.px == p.Px == p[1]
-@assert p.y == p.Y == p.py == p.Py == p[2]
-@assert p.z == p.Z == p.pz == p.Pz == p[3]
-@assert p.E == p.T == p.t == p[4] == p[0]
+p = FourVector(1.0, 2.0, 3.0; E = 4.0)
+p = FourVector(1.0, 2.0, 3.0; M = sqrt(2))
 ```
+
+### Properties
+
+You can access the components directly:
+
+```julia
+px = p.px
+py = p.py
+pz = p.pz
+E  = p.E
+```
+
+Or using aliases and indexing:
+
+```julia
+px = p[1]
+py = p[2]
+pz = p[3]
+E  = p[4]
+
+momentum = p[1:3]  # Returns an array of [px, py, pz]
+```
+
+### Kinematic Quantities
+
+Compute various kinematic quantities using provided `LorentzVectorBase` functions and aliases:
+
+```julia
+m    = mass(p)               # Invariant mass
+pt   = pt(p)                 # Transverse momentum
+eta  = eta(p)                # Pseudorapidity
+phi  = azimuthal_angle(p)    # Azimuthal angle φ
+theta = polar_angle(p)       # Polar angle θ
+```
+
+### Lorentz Transformations
+
+#### Rotations and Boosts
+
+Rotate a four-vector around the x, y, or z-axis with active rotations:
+
+```julia
+# Rotation around x-axis by angle α
+p_rotated_x = Rx(p, α)
+
+# Rotation around y-axis by angle θ
+p_rotated_y = Ry(p, θ)
+
+# Rotation around z-axis by angle ϕ
+p_rotated_z = Rz(p, ϕ)
+```
+
+Perform a boost along the z-axis with Lorentz factor γ:
+
+```julia
+p_boosted = Bz(p, γ)
+```
+A boost in the opposite direction can be achieved by passing a negative Lorentz factor.
+
+## Contributing
+
+Contributions are welcome! If you find a bug or have a feature request, please open an issue on the GitHub repository.
+
+## License
+
+This package is released under the MIT License.

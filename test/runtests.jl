@@ -1,7 +1,14 @@
+using FourVectors
 using Test
 
-@testset "creation" "creation of the FourVectors, Interfaces" begin
-    include("creation.jl") end
-
-@testset "transfrormations" "boost and rotations on example" begin
-    include("transformations.jl") end
+for (root, dirs, files) in walkdir(@__DIR__)
+    for file in files
+        if isnothing(match(r"^test-.*\.jl$", file))
+            continue
+        end
+        title = titlecase(replace(splitext(file[6:end])[1], "-" => " "))
+        @testset "$title" begin
+            include(file)
+        end
+    end
+end

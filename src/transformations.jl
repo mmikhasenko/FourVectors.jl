@@ -1,33 +1,56 @@
+"""
+    Rz(p::FourVector{T}, θ::T) where {T}
 
-function Rx!(p::T where T<:AbstractVector, α::T where T<:Real)
-    sinα, cosα = sin(α), cos(α)
-    p[2], p[3] = p[2]*cosα-p[3]*sinα,
-                 p[2]*sinα+p[3]*cosα
-    return p
+Applies active rotation by an angle α about x-axis to `p`.
+"""
+function Rx(p::FourVector{T}, α::T) where {T}
+    sinα, cosα = sincos(α)
+    new_py = p.py * cosα - p.pz * sinα
+    new_pz = p.py * sinα + p.pz * cosα
+    return FourVector{T}(p.px, new_py, new_pz, p.E)
 end
-Rx(p::T where T<:AbstractVector, α::T where T<:Real) = Rx!(copy(p),α)
-#
-function Ry!(p::T where T<:AbstractVector, θ::T where T<:Real)
-    sinθ, cosθ = sin(θ), cos(θ)
-    p[3], p[1] = p[3]*cosθ-p[1]*sinθ,
-                 p[3]*sinθ+p[1]*cosθ
-    return p
+
+"""
+    Rz(p::FourVector{T}, θ::T) where {T}
+
+Applies active rotation by an angle θ about y-axis to `p`.
+"""
+function Ry(p::FourVector{T}, θ::T) where {T}
+    sinθ, cosθ = sincos(θ)
+    new_pz = p.pz * cosθ - p.px * sinθ
+    new_px = p.pz * sinθ + p.px * cosθ
+    return FourVector{T}(new_px, p.py, new_pz, p.E)
 end
-Ry(p::T where T<:AbstractVector, θ::T where T<:Real) = Ry!(copy(p),θ)
-# 
-function Rz!(p::T where T<:AbstractVector, ϕ::T where T<:Real)
-    sinϕ, cosϕ = sin(ϕ), cos(ϕ)
-    p[1], p[2] = p[1]*cosϕ-p[2]*sinϕ,
-                 p[1]*sinϕ+p[2]*cosϕ
-    return p
+
+"""
+    Rz(p::FourVector{T}, ϕ::T) where {T}
+
+Applies active rotation by an angle ϕ about z-axis to `p`.
+"""
+function Rz(p::FourVector{T}, ϕ::T) where {T}
+    sinϕ, cosϕ = sincos(ϕ)
+    new_px = p.px * cosϕ - p.py * sinϕ
+    new_py = p.px * sinϕ + p.py * cosϕ
+    return FourVector{T}(new_px, new_py, p.pz, p.E)
 end
-Rz(p::T where T<:AbstractVector, ϕ::T where T<:Real) = Rz!(copy(p),ϕ)
-# 
-function Bz!(p::T where T<:AbstractVector, γ::T where T<:Real)
+
+"""
+    Bz(p::FourVector{T}, γ::T) where {T}
+
+Applies active boost along z-axis to `p` with boost factor `γ`.
+Negative value of `γ` corresponds to boost in opposite direction.
+"""
+function Bz(p::FourVector{T}, γ::T) where {T}
     _γ = abs(γ)
-    _βγ = sqrt(γ^2-1)*sign(γ)
-    p[3], p[4] = _γ *p[3]+_βγ*p[4],
-                 _βγ*p[3]+ _γ*p[4]
-    return p
+    _βγ = sqrt(γ^2 - 1) * sign(γ)
+    #
+    new_pz = _γ * p.pz + _βγ * p.E
+    new_E = _γ * p.E + _βγ * p.pz
+    return FourVector{T}(p.px, p.py, new_pz, new_E)
 end
-Bz(p::T where T<:AbstractVector, γ::T where T<:Real) = Bz!(copy(p),γ)
+
+# functors
+Rx(ϕ) = p -> Rx(p, ϕ)
+Ry(ϕ) = p -> Ry(p, ϕ)
+Rz(ϕ) = p -> Rz(p, ϕ)
+Bz(γ) = p -> Bz(p, γ)
