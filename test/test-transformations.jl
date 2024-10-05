@@ -1,15 +1,13 @@
 using FourVectors
 using Test
-using Parameters
 
 @testset "Pi0 decay" begin
-
     mπ0 = 0.135
     pπ0 = FourVector(1.0, 1.0, 30.0; M = mπ0)
     #
     pγ1 = mπ0 / 2 .* FourVector(sin(0.3), 0.0, cos(0.3); E = 1.0)
     pγ1 = Bz(pγ1, boost_gamma(pπ0))
-    @unpack cosθ, ϕ = spherical_coordinates(pπ0)
+    (; cosθ, ϕ) = spherical_coordinates(pπ0)
 
     pγ1 = Ry(pγ1, acos(cosθ))
     pγ1 = Rz(pγ1, ϕ)
