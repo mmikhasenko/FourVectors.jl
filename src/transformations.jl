@@ -55,7 +55,6 @@ Ry(ϕ) = p -> Ry(p, ϕ)
 Rz(ϕ) = p -> Rz(p, ϕ)
 Bz(γ) = p -> Bz(p, γ)
 
-
 """
     rotate_to_plane(p, which_z, which_xplus)
 
@@ -75,8 +74,8 @@ julia> rotate_to_plane(p, which_z, which_xplus)
 ```
 """
 function rotate_to_plane(p, which_z, which_xplus)
-	θb = polar_angle(which_z)
-	ϕb = azimuthal_angle(which_z)
+    θb = polar_angle(which_z)
+    ϕb = azimuthal_angle(which_z)
     ϕt = azimuthal_angle(which_xplus |> Rz(-ϕb) |> Ry(-θb))
     p |> Rz(-ϕb) |> Ry(-θb) |> Rz(-ϕt)
 end
