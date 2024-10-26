@@ -27,6 +27,7 @@ export Rx
 export Ry
 export Rz
 export Bz
+export transform_to_cmf, rotate_to_plane
 include("transformations.jl")
 
 end # module

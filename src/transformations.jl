@@ -54,3 +54,55 @@ Rx(ϕ) = p -> Rx(p, ϕ)
 Ry(ϕ) = p -> Ry(p, ϕ)
 Rz(ϕ) = p -> Rz(p, ϕ)
 Bz(γ) = p -> Bz(p, γ)
+
+"""
+    rotate_to_plane(p, which_z, which_xplus)
+
+Rotates a four-momentum `p` into a reference plane defined by the `z`-axis (`which_z`) and an additional reference direction (`which_xplus`).
+
+This function performs a sequence of rotations:
+1. Aligns `p` with the z-axis as defined by `which_z`.
+2. Rotates around the z-axis to align with the x-axis direction specified by `which_xplus`.
+
+# Example
+```julia
+julia> p = FourVector(0.5, 0.5, 0.5; M=1.0);
+	which_z = FourVector(0.0, 0.0, 1.0; M=2.0);
+	which_xplus = FourVector(1.0, 1.0, 0.0; M=0.0);
+julia> rotate_to_plane(p, which_z, which_xplus)
+[0.7071067811865475, 5.551115123125783e-17, 0.5, 1.3228756555322954]
+```
+"""
+function rotate_to_plane(p, which_z, which_xplus)
+    θb = polar_angle(which_z)
+    ϕb = azimuthal_angle(which_z)
+    ϕt = azimuthal_angle(which_xplus |> Rz(-ϕb) |> Ry(-θb))
+    p |> Rz(-ϕb) |> Ry(-θb) |> Rz(-ϕt)
+end
+
+"""
+    transform_to_cmf(p, which_cmf)
+
+Transforms a four-momentum `p` to the center-of-momentum frame (CMF) of the reference frame specified by `which_cmf`.
+
+This function applies a series of transformations:
+1. Rotates `p` to align with the z-axis.
+2. Boosts `p` along the z-axis to reach the CMF.
+
+# Example
+```julia
+julia> p = FourVector(0.5, 0.5, 0.5; M=1.0);
+julia> transform_to_cmf(p, FourVector(1.0, 0.0, 0.0; E=2.0))
+
+[-0.49999999999999994, 0.5, -0.18641234663634787, 1.238850097057134]
+```
+"""
+function transform_to_cmf(p, which_cmf)
+    pR = which_cmf
+    θ = polar_angle(pR)
+    ϕ = azimuthal_angle(pR)
+    γ = boost_gamma(pR)
+
+    # Apply rotation and boost transformations
+    p |> Rz(-ϕ) |> Ry(-θ) |> Bz(-γ)
+end
