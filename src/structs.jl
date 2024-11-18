@@ -1,4 +1,4 @@
-struct FourVector{T} <: FieldVector{4,T}
+struct FourVector{T} <: FieldVector{4, T}
     px::T
     py::T
     pz::T
@@ -9,8 +9,8 @@ function FourVector(
     px::T,
     py::T,
     pz::T;
-    E::Union{Nothing,T} = nothing,
-    M::Union{Nothing,T} = nothing,
+    E::Union{Nothing, T} = nothing,
+    M::Union{Nothing, T} = nothing,
 ) where {T}
     @assert (E !== nothing) != (M !== nothing) "Must specify exactly one of E or M."
 
@@ -23,14 +23,14 @@ function FourVector(
     end
 end
 
-FourVector(p::NTuple{4,T}) where {T} = FourVector{T}(p...)
+FourVector(p::NTuple{4, T}) where {T} = FourVector{T}(p...)
 FourVector(p::AbstractVector{T}) where {T} = FourVector{T}(p...)
 
-LorentzVectorBase.coordinate_system(::FourVector) = LorentzVectorBase.XYZE()
+LorentzVectorBase.coordinate_system(::FourVector) = LorentzVectorBase.PxPyPzE()
 LorentzVectorBase.px(mom::FourVector) = mom.px
 LorentzVectorBase.py(mom::FourVector) = mom.py
 LorentzVectorBase.pz(mom::FourVector) = mom.pz
-LorentzVectorBase.energy(mom::FourVector) = mom.E
+LorentzVectorBase.E(mom::FourVector) = mom.E
 
 LinearAlgebra.dot(p1::FourVector, p2::FourVector) = p1.E * p2.E - dot(p1.P, p2.P)
 
