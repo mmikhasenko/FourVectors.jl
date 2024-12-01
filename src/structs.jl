@@ -27,10 +27,10 @@ FourVector(p::NTuple{4, T}) where {T} = FourVector{T}(p...)
 FourVector(p::AbstractVector{T}) where {T} = FourVector{T}(p...)
 
 LorentzVectorBase.coordinate_system(::FourVector) = LorentzVectorBase.PxPyPzE()
-LorentzVectorBase.px(mom::FourVector) = mom.px
-LorentzVectorBase.py(mom::FourVector) = mom.py
-LorentzVectorBase.pz(mom::FourVector) = mom.pz
-LorentzVectorBase.E(mom::FourVector) = mom.E
+LorentzVectorBase.px(mom::FourVector) = getfield(mom, :px)
+LorentzVectorBase.py(mom::FourVector) = getfield(mom, :py)
+LorentzVectorBase.pz(mom::FourVector) = getfield(mom, :pz)
+LorentzVectorBase.E(mom::FourVector) = getfield(mom, :E)
 
 LinearAlgebra.dot(p1::FourVector, p2::FourVector) = p1.E * p2.E - dot(p1.P, p2.P)
 
