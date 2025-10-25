@@ -7,10 +7,21 @@ using LorentzVectorBase
 
 export FourVector
 
-# Access the list of function names
+# Access the list of function names relevant for this package
 const ALL_GETTER_FUNCTIONS = vcat(
-    collect(LorentzVectorBase.FOURMOMENTUM_GETTER_FUNCTIONS),
-    collect(keys(LorentzVectorBase.FOURMOMENTUM_GETTER_ALIASSES)),
+    :transverse_momentum,
+    :spatial_magnitude,
+    :mass,
+    :mass2,
+    :boost_beta,
+    :boost_gamma,
+    :rapidity,
+    :polar_angle,
+    :cos_theta,
+    :cos_phi,
+    :sin_phi,
+    :azimuthal_angle,
+    :pseudorapidity
 )
 
 # Loop over each function name and import and export it
@@ -29,5 +40,6 @@ export Rz
 export Bz
 export transform_to_cmf, rotate_to_plane
 include("transformations.jl")
+
 
 end # module
